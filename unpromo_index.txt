@@ -1,0 +1,28 @@
+0x42 Cavalier (Dismounted)
+0x43 Lance Knight (Dismounted)
+0x44 Bow Knight (Dismounted)
+0x45 Axe Knight (Dismounted)
+0x46 Sword Knight (Dismounted)
+0x47 Troubadour (Dismounted)
+0x50 Pegasus Knight (Dismounted)
+0x52 Wyvern Rider (Dismounted)
+0x15 Archer
+0x16 Myrmidon
+0x1D Armored Lance
+0x1E Armored Axe
+0x1F Armored Bow
+0x20 Armored Sword
+0x22 Brigand
+0x25 Hunter
+0x26 Pirate
+0x29 Lord
+0x2D Dancer
+0x2E Priest
+0x2F Mage
+0x30 Loptyr Mage
+0x31 Thunder Mage
+0x33 High Priest
+0x36 Bard
+0x37 Sister
+0x3A Thief
+0x41 Fighter
