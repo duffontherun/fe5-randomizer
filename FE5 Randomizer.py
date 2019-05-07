@@ -11,6 +11,9 @@ print("Fire Emblem 5 Randomizer By NNadnerd")
 root = tk.Tk()
 root.withdraw()
 red_growths_player = "0"
+first_skill = [0x8, 0x10]
+second_skill = [0x1, 0x2, 0x8, 0x10, 0x20, 0x40, 0x80]
+third_skill = [0x1, 0x2, 0x4, 0x8, 0x10]
 class Unit:
     def __init__(self, rom, m):
         self.hp = rom[0x31A2D + (48 * m) + 0]
@@ -242,6 +245,8 @@ else:
     if fow == "1":
         fow_min = int(input("The Minimum For Vision Range (0 for infinite):"))
         fow_max = int(input("The Maximum For Vision Range (0 for infinite):"))
+    items = input("Randomize Weapons?\n")
+    item_effects = input("Randomize Weapon Effects?")
     remove_weapon_locks = input("Remove Weapon Locks?\n")
     export = input("Export Preset?\n")
     if export == "1":
@@ -287,6 +292,8 @@ else:
         entries.append("fow_min = %s\n" % fow_min)
         entries.append("fow_max = %s\n" % fow_max)
         entries.append("remove_weapon_locks = \"%s\"\n" % remove_weapon_locks)
+        entries.append("item_effects = \"%s\"\n" % item_effects)
+        entries.append("items = \"%s\"\n" % items)
         prst = open("%s.rpst" % export_name, "w")
         prst.writelines(entries)
         prst.close()
@@ -563,6 +570,31 @@ if bases_enemy == "1":
     weisman.con = random.randint(bases_min, bases_max)
     weisman.lck = random.randint(bases_min, bases_max)
     weisman.mov = random.randint(bases_min, bases_max)
+if skills_player == "1":
+    leif.skill_one = 0x1
+    leif.skill_two = 0x1
+    leif.skill_three = 0x1
+if skills_bosses == "1":
+    weisman.skill_one = 0x1
+    weisman.skill_two = 0x1
+    weisman.skill_three = 0x1
+if movement_stars_player == "1":
+    leif.move_stars = random.randint(movement_stars_min, movement_stars_max)
+if movement_stars_bosses == "1":
+    weisman.move_stars = random.randint(movement_stars_min, movement_stars_max)
+if leadership_stars_player == "1":
+    leif.lead_stars = random.randint(leadership_stars_min, leadership_stars_max)
+if leadership_stars_bosses == "1":
+    weisman.lead_stars = random.randint(leadership_stars_min, leadership_stars_max)
+if pcc_player == "1":
+    leif.pcc = random.randint(pcc_min, pcc_max)
+if pcc_boss == "1":
+    weisman.pcc = random.randint(pcc_min, pcc_max)
+#if crusader_scrolls == "1":
+#if fow == "1":
+#if items == "1":
+#if item_effects == "1":
+#if remove_weapon_locks == "1":
 ###
 
 ### VALUE WRITING

@@ -33,4 +33,6 @@ crusader_scrolls_max = 1
 fow = "1"
 fow_min = 1
 fow_max = 1
+items = "1"
+item_effects = "1"
 remove_weapon_locks = "1"
