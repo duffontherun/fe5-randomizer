@@ -20,6 +20,9 @@ uec.close()
 uecb = open("unit_exec_class_boss.txt", "r")
 unit_exec_class_boss = uec.readlines()
 uecb.close()
+uci = open("unit_config_index.txt", "r")
+unit_config_index = uci.readlines()
+uci.close()
 class Unit:
     def __init__(self, rom, m):
         self.hp = rom[0x31A2D + (48 * m) + 0]
@@ -554,9 +557,9 @@ if growths_player == "1":
         exec("%s.dfc_growth = random.randint(growths_min, growths_max)" % unit_exec_class[x])
         exec("%s.con_growth = random.randint(growths_min, growths_max)" % unit_exec_class[x])
         exec("%s.lck_growth = random.randint(growths_min, growths_max)" % unit_exec_class[x])
-        exec("%s.mov_growth = random.randint(growths_min, growths_max)" % unit_exec_class[x])
+        exec("%s.mov_growth = random.randint(0, 5)" % unit_exec_class[x])
 if red_growths_player == "1":
-    leif_div = int(leif.hp_growth) + int(leif.stg_growth) + int(leif.mag_growth) + int(leif.skl_growth) + int(leif.spd_growth) + int(leif.dfc_growth) + int(leif.con_growth) + int(leif.lck_growth) + int(leif.mov_growth)
+    leif_div = int(leif.hp_growth) + int(leif.stg_growth) + int(leif.mag_growth) + int(leif.skl_growth) + int(leif.spd_growth) + int(leif.dfc_growth) + int(leif.con_growth) + int(leif.lck_growth)
 if bases_player == "1":
     for x in range(0, 52):
         exec("%s.hp = random.randint(bases_min, bases_max)" % unit_exec_class[x])
@@ -567,7 +570,6 @@ if bases_player == "1":
         exec("%s.dfc = random.randint(bases_min, bases_max)" % unit_exec_class[x])
         exec("%s.con = random.randint(bases_min, bases_max)" % unit_exec_class[x])
         exec("%s.lck = random.randint(bases_min, bases_max)" % unit_exec_class[x])
-        exec("%s.mov = random.randint(bases_min, bases_max)" % unit_exec_class[x])
 if bases_enemy == "1":
     for x in range(0, 50):
         exec("%s.hp = random.randint(bases_min, bases_max)" % unit_exec_class_boss[x])
@@ -779,9 +781,11 @@ else:
 
 #scroll writing
 
-#inflate enemy growths
+#increase enemy growths
 if increase_enemy == "1":
-    untouchables = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    untouchables = []
+    for x in range(0, 184):
+        untouchables.append(int(unit_config_index[x]) - 1)
     unit = 0
     if enemy_growth_varient > 127:
         enemy_growth_varient = 127
