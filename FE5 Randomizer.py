@@ -14,6 +14,12 @@ red_growths_player = "0"
 first_skill = [0x8, 0x10]
 second_skill = [0x1, 0x2, 0x8, 0x10, 0x20, 0x40, 0x80]
 third_skill = [0x1, 0x2, 0x4, 0x8, 0x10]
+uec = open("unit_exec_class.txt", "r")
+unit_exec_class = uec.readlines()
+uec.close()
+uecb = open("unit_exec_class_boss.txt", "r")
+unit_exec_class_boss = uec.readlines()
+uecb.close()
 class Unit:
     def __init__(self, rom, m):
         self.hp = rom[0x31A2D + (48 * m) + 0]
@@ -539,37 +545,38 @@ if character_classes == "1":
             prom = random.choice(promoted_classes)
             promo.append(int(prom.split(" ")[0]))
 if growths_player == "1":
-    leif.hp_growth = random.randint(growths_min, growths_max)
-    leif.stg_growth = random.randint(growths_min, growths_max)
-    leif.mag_growth = random.randint(growths_min, growths_max)
-    leif.skl_growth = random.randint(growths_min, growths_max)
-    leif.spd_growth = random.randint(growths_min, growths_max)
-    leif.dfc_growth = random.randint(growths_min, growths_max)
-    leif.con_growth = random.randint(growths_min, growths_max)
-    leif.lck_growth = random.randint(growths_min, growths_max)
-    leif.mov_growth = random.randint(growths_min, growths_max)
+    for x in range(0, 52):
+        exec("%s.hp_growth = random.randint(growths_min, growths_max)" % unit_exec_class[x])
+        exec("%s.stg_growth = random.randint(growths_min, growths_max)" % unit_exec_class[x])
+        exec("%s.mag_growth = random.randint(growths_min, growths_max)" % unit_exec_class[x])
+        exec("%s.skl_growth = random.randint(growths_min, growths_max)" % unit_exec_class[x])
+        exec("%s.spd_growth = random.randint(growths_min, growths_max)" % unit_exec_class[x])
+        exec("%s.dfc_growth = random.randint(growths_min, growths_max)" % unit_exec_class[x])
+        exec("%s.con_growth = random.randint(growths_min, growths_max)" % unit_exec_class[x])
+        exec("%s.lck_growth = random.randint(growths_min, growths_max)" % unit_exec_class[x])
+        exec("%s.mov_growth = random.randint(growths_min, growths_max)" % unit_exec_class[x])
 if red_growths_player == "1":
     leif_div = int(leif.hp_growth) + int(leif.stg_growth) + int(leif.mag_growth) + int(leif.skl_growth) + int(leif.spd_growth) + int(leif.dfc_growth) + int(leif.con_growth) + int(leif.lck_growth) + int(leif.mov_growth)
 if bases_player == "1":
-    leif.hp = random.randint(bases_min, bases_max)
-    leif.stg = random.randint(bases_min, bases_max)
-    leif.mag = random.randint(bases_min, bases_max)
-    leif.skl = random.randint(bases_min, bases_max)
-    leif.spd = random.randint(bases_min, bases_max)
-    leif.dfc = random.randint(bases_min, bases_max)
-    leif.con = random.randint(bases_min, bases_max)
-    leif.lck = random.randint(bases_min, bases_max)
-    leif.mov = random.randint(bases_min, bases_max)
+    exec("%s.hp = random.randint(bases_min, bases_max)" % unit_exec_class[x])
+    exec("%s.stg = random.randint(bases_min, bases_max)" % unit_exec_class[x])
+    exec("%s.mag = random.randint(bases_min, bases_max)" % unit_exec_class[x])
+    exec("%s.skl = random.randint(bases_min, bases_max)" % unit_exec_class[x])
+    exec("%s.spd = random.randint(bases_min, bases_max)" % unit_exec_class[x])
+    exec("%s.dfc = random.randint(bases_min, bases_max)" % unit_exec_class[x])
+    exec("%s.con = random.randint(bases_min, bases_max)" % unit_exec_class[x])
+    exec("%s.lck = random.randint(bases_min, bases_max)" % unit_exec_class[x])
+    exec("%s.mov = random.randint(bases_min, bases_max)" % unit_exec_class[x])
 if bases_enemy == "1":
-    weisman.hp = random.randint(bases_min, bases_max)
-    weisman.stg = random.randint(bases_min, bases_max)
-    weisman.mag = random.randint(bases_min, bases_max)
-    weisman.skl = random.randint(bases_min, bases_max)
-    weisman.spd = random.randint(bases_min, bases_max)
-    weisman.dfc = random.randint(bases_min, bases_max)
-    weisman.con = random.randint(bases_min, bases_max)
-    weisman.lck = random.randint(bases_min, bases_max)
-    weisman.mov = random.randint(bases_min, bases_max)
+    exec("%s.hp = random.randint(bases_min, bases_max)" % uec[x])
+    exec("%s.stg = random.randint(bases_min, bases_max)" % uec[x])
+    exec("%s.mag = random.randint(bases_min, bases_max)" % uec[x])
+    exec("%s.skl = random.randint(bases_min, bases_max)" % uec[x])
+    exec("%s.spd = random.randint(bases_min, bases_max)" % uec[x])
+    exec("%s.dfc = random.randint(bases_min, bases_max)" % uec[x])
+    exec("%s.con = random.randint(bases_min, bases_max)" % uec[x])
+    exec("%s.lck = random.randint(bases_min, bases_max)" % uec[x])
+    exec("%s.mov = random.randint(bases_min, bases_max)" % uec[x])
 if skills_player == "1":
     leif.skill_one = 0x1
     leif.skill_two = 0x1
