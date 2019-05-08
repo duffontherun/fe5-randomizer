@@ -558,25 +558,27 @@ if growths_player == "1":
 if red_growths_player == "1":
     leif_div = int(leif.hp_growth) + int(leif.stg_growth) + int(leif.mag_growth) + int(leif.skl_growth) + int(leif.spd_growth) + int(leif.dfc_growth) + int(leif.con_growth) + int(leif.lck_growth) + int(leif.mov_growth)
 if bases_player == "1":
-    exec("%s.hp = random.randint(bases_min, bases_max)" % unit_exec_class[x])
-    exec("%s.stg = random.randint(bases_min, bases_max)" % unit_exec_class[x])
-    exec("%s.mag = random.randint(bases_min, bases_max)" % unit_exec_class[x])
-    exec("%s.skl = random.randint(bases_min, bases_max)" % unit_exec_class[x])
-    exec("%s.spd = random.randint(bases_min, bases_max)" % unit_exec_class[x])
-    exec("%s.dfc = random.randint(bases_min, bases_max)" % unit_exec_class[x])
-    exec("%s.con = random.randint(bases_min, bases_max)" % unit_exec_class[x])
-    exec("%s.lck = random.randint(bases_min, bases_max)" % unit_exec_class[x])
-    exec("%s.mov = random.randint(bases_min, bases_max)" % unit_exec_class[x])
+    for x in range(0, 52):
+        exec("%s.hp = random.randint(bases_min, bases_max)" % unit_exec_class[x])
+        exec("%s.stg = random.randint(bases_min, bases_max)" % unit_exec_class[x])
+        exec("%s.mag = random.randint(bases_min, bases_max)" % unit_exec_class[x])
+        exec("%s.skl = random.randint(bases_min, bases_max)" % unit_exec_class[x])
+        exec("%s.spd = random.randint(bases_min, bases_max)" % unit_exec_class[x])
+        exec("%s.dfc = random.randint(bases_min, bases_max)" % unit_exec_class[x])
+        exec("%s.con = random.randint(bases_min, bases_max)" % unit_exec_class[x])
+        exec("%s.lck = random.randint(bases_min, bases_max)" % unit_exec_class[x])
+        exec("%s.mov = random.randint(bases_min, bases_max)" % unit_exec_class[x])
 if bases_enemy == "1":
-    exec("%s.hp = random.randint(bases_min, bases_max)" % uec[x])
-    exec("%s.stg = random.randint(bases_min, bases_max)" % uec[x])
-    exec("%s.mag = random.randint(bases_min, bases_max)" % uec[x])
-    exec("%s.skl = random.randint(bases_min, bases_max)" % uec[x])
-    exec("%s.spd = random.randint(bases_min, bases_max)" % uec[x])
-    exec("%s.dfc = random.randint(bases_min, bases_max)" % uec[x])
-    exec("%s.con = random.randint(bases_min, bases_max)" % uec[x])
-    exec("%s.lck = random.randint(bases_min, bases_max)" % uec[x])
-    exec("%s.mov = random.randint(bases_min, bases_max)" % uec[x])
+    for x in range(0, 50):
+        exec("%s.hp = random.randint(bases_min, bases_max)" % unit_exec_class_boss[x])
+        exec("%s.stg = random.randint(bases_min, bases_max)" % unit_exec_class_boss[x])
+        exec("%s.mag = random.randint(bases_min, bases_max)" % unit_exec_class_boss[x])
+        exec("%s.skl = random.randint(bases_min, bases_max)" % unit_exec_class_boss[x])
+        exec("%s.spd = random.randint(bases_min, bases_max)" % unit_exec_class_boss[x])
+        exec("%s.dfc = random.randint(bases_min, bases_max)" % unit_exec_class_boss[x])
+        exec("%s.con = random.randint(bases_min, bases_max)" % unit_exec_class_boss[x])
+        exec("%s.lck = random.randint(bases_min, bases_max)" % unit_exec_class_boss[x])
+        exec("%s.mov = random.randint(bases_min, bases_max)" % unit_exec_class_boss[x])
 if skills_player == "1":
     leif.skill_one = 0x1
     leif.skill_two = 0x1
@@ -586,17 +588,23 @@ if skills_bosses == "1":
     weisman.skill_two = 0x1
     weisman.skill_three = 0x1
 if movement_stars_player == "1":
-    leif.move_stars = random.randint(movement_stars_min, movement_stars_max)
+    for x in range(0, 52):
+        exec("%s.move_stars = random.randint(movement_stars_min, movement_stars_max)" % unit_exec_class[x])
 if movement_stars_bosses == "1":
-    weisman.move_stars = random.randint(movement_stars_min, movement_stars_max)
+    for x in range(0, 50):
+        exec("%s.move_stars = random.randint(movement_stars_min, movement_stars_max)" % unit_exec_class_boss[x])
 if leadership_stars_player == "1":
-    leif.lead_stars = random.randint(leadership_stars_min, leadership_stars_max)
+    for x in range(0, 52):
+        exec("%s.lead_stars = random.randint(leadership_stars_min, leadership_stars_max)" % unit_exec_class[x])
 if leadership_stars_bosses == "1":
-    weisman.lead_stars = random.randint(leadership_stars_min, leadership_stars_max)
+    for x in range(0, 50):
+        exec("%s.lead_stars = random.randint(leadership_stars_min, leadership_stars_max)" % unit_exec_class_boss[x])
 if pcc_player == "1":
-    leif.pcc = random.randint(pcc_min, pcc_max)
+    for x in range(0, 52):
+        exec("%s.pcc = random.randint(pcc_min, pcc_max)" % unit_exec_class[x])
 if pcc_boss == "1":
-    weisman.pcc = random.randint(pcc_min, pcc_max)
+    for x in range(0, 50):
+        exec("%s.pcc = random.randint(pcc_min, pcc_max)" % unit_exec_class_boss[x])
 #if crusader_scrolls == "1":
 #if fow == "1":
 #if items == "1":
