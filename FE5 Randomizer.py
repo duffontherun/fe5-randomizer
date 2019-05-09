@@ -23,6 +23,60 @@ uecb.close()
 uci = open("unit_config_index.txt", "r")
 unit_config_index = uci.readlines()
 uci.close()
+
+unp = open("unpromo_index.txt", "r")
+unpromoted_classes = unp.readlines()
+unp.close()
+unpromoted = []
+for x in range(0, 1000):
+    uclass = random.choice(unpromoted_classes)
+    unpromoted.append(int(uclass.split(" ")[0]))
+
+pro = open("promo_index.txt", "r")
+promoted_classes = pro.readlines()
+pro.close()
+promoted = []
+for x in range(0, 1000):
+    uclass = random.choice(promoted_classes)
+    promoted.append(int(uclass.split(" ")[0]))
+    
+skillz = []
+for x in range(0, 1000):
+    cha = random.randint(1, 80)
+    modif = dict()
+    if cha > 70:
+        modif.update({"first" : random.sample(first_skill, random.randint(0, 2))})
+    elif cha > 60:
+        modif.update({"second" : random.sample(second_skill, random.randint(0, 7))})
+    elif cha > 50:
+        modif.update({"third" : random.sample(third_skill, random.randint(0, 5))})
+    elif cha > 40:
+        modif.update({"third" : random.choice(third_skill)})
+        modif.update({"second" : random.choice(second_skill)})
+    first = 0x0
+    second = 0x0
+    third = 0x0
+    try:
+        first = sum(modif["first"])
+    except:
+        try:
+            second = sum(modif["second"])
+            third = sum(modif["third"])
+        except:
+            try:
+                second = sum(modif["second"])
+            except:
+                try:
+                    third = sum(modif["third"])
+                except:
+                    first = 0x0
+    skillz.append([first, second, third])
+
+promo = []
+for x in range(0, 50):
+    prom = random.choice(promoted_classes)
+    promo.append(int(prom.split(" ")[0]))
+
 class Unit:
     def __init__(self, rom, m):
         self.hp = rom[0x31A2D + (48 * m) + 0]
@@ -183,7 +237,6 @@ def promolinker(unprom):
         return 0x3B
     elif unprom == 0x41:
         return 0x71
-    
 ###
 
 ### INIT
@@ -417,136 +470,19 @@ draco_eyvel = Unit(rom, 0x13C)
 #chapter objects
 ###
 
-### SELECTION INITILIZATION
-unp = open("unpromo_index.txt", "r")
-unpromoted_classes = unp.readlines()
-unp.close()
-unpromoted = []
-for x in range(0, 1000):
-    uclass = random.choice(unpromoted_classes)
-    unpromoted.append(int(uclass.split(" ")[0]))
-
-pro = open("promo_index.txt", "r")
-promoted_classes = pro.readlines()
-pro.close()
-promoted = []
-for x in range(0, 1000):
-    uclass = random.choice(promoted_classes)
-    promoted.append(int(uclass.split(" ")[0]))
-###
-
 ### ACTUAL RANDOMIZATION
 if character_classes == "1":
     if leif_class == "1":
-        le = random.choice(unpromoted_classes).split(" ")[0]
-        leif.uclass = unpromoted[50]
+        leif.uclass = unpromoted[random.randint(1, 9999)]
     if player_class == "1":
-        finn.uclass = unpromoted[0]
-        orsin.uclass = unpromoted[1]
-        halvan.uclass = unpromoted[2]
-        ralph.uclass = unpromoted[5]
-        marty.uclass = unpromoted[6]
-        ronan.uclass = unpromoted[7]
-        miranda.uclass = unpromoted[8]
-        safy.uclass = unpromoted[9]
-        lara.uclass = unpromoted[10]
-        brighton.uclass = unpromoted[11]
-        fergus.uclass = unpromoted[12]
-        eda.uclass = unpromoted[13]
-        asvel.uclass = unpromoted[14]
-        matria.uclass = unpromoted[15]
-        hicks.uclass = unpromoted[16]
-        nanna.uclass = unpromoted[17]
-        selphina.uclass = unpromoted[18]
-        dalson.uclass = unpromoted[19]
-        callion.uclass = unpromoted[20]
-        shiva.uclass = unpromoted[21]
-        kane.uclass = unpromoted[24]
-        alba.uclass = unpromoted[25]
-        robert.uclass = unpromoted[26]
-        lifis.uclass = unpromoted[30]
-        karen.uclass = unpromoted[31]
-        trude.uclass = unpromoted[34]
-        tanya.uclass = unpromoted[35]
-        linoan.uclass = unpromoted[36]
-        salem.uclass = unpromoted[38]
-        seluf.uclass = unpromoted[39]
-        mareeta.uclass = unpromoted[40]
-        tina.uclass = unpromoted[41]
-        homer.uclass = unpromoted[44]
-        sara.uclass = unpromoted[46]
-        saias.uclass = promoted[0]
-        dermott.uclass = promoted[1]
-        conomore.uclass = promoted[2]
-        amalda.uclass = promoted[3]
-        mischa.uclass = promoted[4]
-        shanam.uclass = promoted[5]
-        dean.uclass = promoted[6]
-        fred.uclass = promoted[7]
-        olwen.uclass = promoted[8]
-        ced.uclass = promoted[9]
-        eyvel.uclass = promoted[10]
-        dagdar.uclass = promoted[11]
-        pahn.uclass = promoted[12]
-        glade.uclass = promoted[13]
-        galzus.uclass = promoted[14]
-        eyrios.uclass = promoted[15]
-        xavier.uclass = promoted[16]
+        for x in range(0, 34):
+            exec("%s.uclass = unpromoted[random.randint(0, 9999)]" % unit_exec_class[x + 1])
+        for x in range(0, 17):
+            exec("%s.uclass = promoted[random.randint(0, 9999)]" % unit_exec_class[x + 35])
     if boss_class == "1":
-        weisman.uclass = unpromoted[47]
-        balist.uclass = promoted[17]
-        lobos.uclass = promoted[18]
-        bandol.uclass = promoted[19]
-        truman.uclass = promoted[20]
-        eisenhowe.uclass = promoted[21]
-        rumaigh.uclass = promoted[22]
-        gomes.uclass = promoted[23]
-        merloc.uclass = promoted[24]
-        dvorak.uclass = promoted[25]
-        largo.uclass = promoted[26]
-        oltof.uclass = promoted[27]
-        colho.uclass = promoted[28]
-        baldack.uclass = promoted[29]
-        paul.uclass = promoted[30]
-        codha.uclass = promoted[31]
-        eichman.uclass = promoted[32]
-        kempf.uclass = promoted[33]
-        reinhardt.uclass = promoted[34]
-        redric.uclass = promoted[35]
-        berdo.uclass = promoted[36]
-        bovis.uclass = promoted[37]
-        bovis_galzus.uclass = promoted[38]
-        canis.uclass = promoted[39]
-        canis_sara.uclass = promoted[40]
-        draco.uclass = promoted[41]
-        draco_eyvel.uclass = promoted[42]
-        tigris.uclass = promoted[43]
-        tigris_dagdar.uclass = promoted[44]
-        porcus.uclass = promoted[45]
-        porcus_lifis.uclass = promoted[46]
-        mus.uclass = promoted[47]
-        zile.uclass = promoted[48]
-        moore.uclass = promoted[49]
-        mueller.uclass = promoted[50]
-        nicolav.uclass = promoted[51]
-        reincock.uclass = promoted[52]
-        gustav.uclass = promoted[53]
-        wolfe.uclass = promoted[54]
-        brooks.uclass = promoted[55]
-        palman.uclass = promoted[56]
-        barat.uclass = promoted[57]
-        seimtore.uclass = promoted[58]
-        flavus.uclass = promoted[59]
-        zaum.uclass = promoted[60]
-        cohen.uclass = promoted[61]
-        alphan.uclass = promoted[62]
-        farden.uclass = promoted[63]
-        coulter.uclass = promoted[64]
-    if promotions == "1":
-        promo = []
-        for x in range(0, 50):
-            prom = random.choice(promoted_classes)
-            promo.append(int(prom.split(" ")[0]))
+        weisman.uclass = unpromoted[random.randint(1, 9999)]
+        for x in range(0, 49):
+            exec("%s.uclass = promoted[random.randint(0, 9999)]" % unit_exec_class_boss[x + 1])
 if growths_player == "1":
     for x in range(0, 52):
         exec("%s.hp_growth = random.randint(growths_min, growths_max)" % unit_exec_class[x])
@@ -582,13 +518,15 @@ if bases_enemy == "1":
         exec("%s.lck = random.randint(bases_min, bases_max)" % unit_exec_class_boss[x])
         exec("%s.mov = random.randint(bases_min, bases_max)" % unit_exec_class_boss[x])
 if skills_player == "1":
-    leif.skill_one = 0x1
-    leif.skill_two = 0x1
-    leif.skill_three = 0x1
+    for x in range(0, 52):
+        exec("%s.skill_one = skillz[random.randint(0, 149)][0]" % unit_exec_class[x])
+        exec("%s.skill_two = skillz[random.randint(0, 149)][1]" % unit_exec_class[x])
+        exec("%s.skill_three = skillz[random.randint(0, 149)][2]" % unit_exec_class[x])
 if skills_bosses == "1":
-    weisman.skill_one = 0x1
-    weisman.skill_two = 0x1
-    weisman.skill_three = 0x1
+    for x in range(0, 50):
+        exec("%s.skill_one = skillz[random.randint(0, 149)][0]" % unit_exec_class_boss[x])
+        exec("%s.skill_two = skillz[random.randint(0, 149)][1]" % unit_exec_class_boss[x])
+        exec("%s.skill_three = skillz[random.randint(0, 149)][2]" % unit_exec_class_boss[x])
 if movement_stars_player == "1":
     for x in range(0, 52):
         exec("%s.move_stars = random.randint(movement_stars_min, movement_stars_max)" % unit_exec_class[x])
