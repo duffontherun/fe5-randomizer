@@ -309,6 +309,8 @@ else:
         fow_max = int(input("The Maximum For Vision Range (0 for infinite):"))
     items = input("Randomize Weapons?\n")
     item_effects = input("Randomize Weapon Effects?")
+    chapter_music = input("Randomize Chapter Music?")
+    tileset = input("Randomize Map Tileset Pallete?")
     remove_weapon_locks = input("Remove Weapon Locks?\n")
     export = input("Export Preset?\n")
     if export == "1":
@@ -356,6 +358,8 @@ else:
         entries.append("remove_weapon_locks = \"%s\"\n" % remove_weapon_locks)
         entries.append("item_effects = \"%s\"\n" % item_effects)
         entries.append("items = \"%s\"\n" % items)
+        entries.append("chapter_music = \"%s\"\n" % chapter_music)
+        entries.append("tileset = \"%s\"\n" % tileset)
         prst = open("%s.rpst" % export_name, "w")
         prst.writelines(entries)
         prst.close()
@@ -466,7 +470,7 @@ porcus = Unit(rom, 0x139)
 porcus_lifis = Unit(rom, 0x13A)
 draco = Unit(rom, 0x13B)
 draco_eyvel = Unit(rom, 0x13C)
-#scroll objects
+#item objects
 #chapter objects
 ###
 
@@ -546,7 +550,6 @@ if pcc_boss == "1":
     for x in range(0, 50):
         exec("%s.pcc = random.randint(pcc_min, pcc_max)" % unit_exec_class_boss[x])
 #if crusader_scrolls == "1":
-#if fow == "1":
 #if items == "1":
 #if item_effects == "1":
 #if remove_weapon_locks == "1":
@@ -715,10 +718,22 @@ else:
     romhand.write(promolinker(homer.uclass))
     romhand.seek(0x402F3 + (3 * 32))
     romhand.write(promolinker(sara.uclass))
-#class writing
-
+#item writing
 #scroll writing
-
+#chapter data randomization
+if fow == "1":
+    for x in range(0, 35):
+        romhand.seek(0x2004A + (48 * x) + 35)
+        romhand.write(random.randint(fow_min, fow_max))
+if chapter_music == "1":
+    for x in range(0, 35):
+        romhand.seek(0x2004A + (48 * x) + 43)
+        romhand.write(random.randint(1, 64))
+        romhand.seek(0x2004A + (48 * x) + 44)
+        romhand.write(random.randint(1, 64))
+        romhand.seek(0x2004A + (48 * x) + 45)
+        romhand.write(random.randint(1, 64))
+#invintory and weapon ranks
 #increase enemy growths
 if increase_enemy == "1":
     untouchables = []
