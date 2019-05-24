@@ -14,31 +14,44 @@ red_growths_player = "0"
 first_skill = [0x8, 0x10]
 second_skill = [0x1, 0x2, 0x8, 0x10, 0x20, 0x40, 0x80]
 third_skill = [0x1, 0x2, 0x4, 0x8, 0x10]
+
 uec = open("unit_exec_class.txt", "r")
 unit_exec_class = uec.readlines()
 uec.close()
+for x in range(0, len(unit_exec_class)):
+    unit_exec_class[x] = unit_exec_class[x].replace("\n", "")
+
 uecb = open("unit_exec_class_boss.txt", "r")
-unit_exec_class_boss = uec.readlines()
+unit_exec_class_boss = uecb.readlines()
 uecb.close()
+for x in range(0, len(unit_exec_class_boss)):
+    unit_exec_class_boss[x] = unit_exec_class_boss[x].replace("\n", "")
+
 uci = open("unit_config_index.txt", "r")
 unit_config_index = uci.readlines()
 uci.close()
+for x in range(0, len(unit_config_index)):
+    unit_config_index[x] = unit_config_index[x].replace("\n", "")
 
 unp = open("unpromo_index.txt", "r")
 unpromoted_classes = unp.readlines()
 unp.close()
+for x in range(0, len(unpromoted_classes)):
+    unpromoted_classes[x] = unpromoted_classes[x].replace("\n", "")
 unpromoted = []
 for x in range(0, 1000):
     uclass = random.choice(unpromoted_classes)
-    unpromoted.append(int(uclass.split(" ")[0]))
+    unpromoted.append(int(uclass.split(" ")[0], 16))
 
 pro = open("promo_index.txt", "r")
 promoted_classes = pro.readlines()
 pro.close()
+for x in range(0, len(promoted_classes)):
+    promoted_classes[x] = promoted_classes[x].replace("\n", "")
 promoted = []
 for x in range(0, 1000):
     uclass = random.choice(promoted_classes)
-    promoted.append(int(uclass.split(" ")[0]))
+    promoted.append(int(uclass.split(" ")[0], 16))
     
 skillz = []
 for x in range(0, 1000):
@@ -75,7 +88,7 @@ for x in range(0, 1000):
 promo = []
 for x in range(0, 50):
     prom = random.choice(promoted_classes)
-    promo.append(int(prom.split(" ")[0]))
+    promo.append(int(prom.split(" ")[0], 16))
 
 class Unit:
     def __init__(self, rom, m):
@@ -117,6 +130,7 @@ class Unit:
         self.lead_stars = rom[0x31A2D + (48 * m) + 45]
         self.map_sprite = rom[0x31A2D + (48 * m) + 46]
         self.portrait = rom[0x31A2D + (48 * m) + 47]
+        self.origoff = 0x31A2D + (48 * m)
     def writable(self):
         formated = bytearray()
         formated.append(self.hp)
@@ -168,9 +182,6 @@ class Unit:
         formated.append(self.map_sprite)
         formated.append(self.portrait)
         return formated
-###
-
-###FUNCTIONS
 def find_preset():
     try:
         preset_path = filedialog.askopenfilename()
@@ -237,6 +248,47 @@ def promolinker(unprom):
         return 0x3B
     elif unprom == 0x41:
         return 0x71
+character_classes = "0"
+promotions = "0"
+leif_class = "0"
+player_class = "0"
+boss_class = "0"
+growths_player = "0"
+red_growths_player = "0"
+increase_enemy = "0"
+enemy_growth_varient = 1
+growths_min = 1
+growths_max = 1
+bases_player = "0"
+bases_enemy = "0"
+bases_min = 1
+bases_max = 1
+skills_player = "0"
+skills_bosses = "0"
+movement_stars_player = "0"
+movement_stars_enemy = "0"
+movement_stars_min = 1
+movement_stars_max = 1
+leadership_stars_player = "0"
+leadership_stars_bosses = "0"
+leadership_stars_min = 1
+leadership_stars_max = 1
+pcc_player = "0"
+pcc_boss = "0"
+pcc_min = 1
+pcc_max = 1
+crusader_scrolls = "0"
+crusader_scrolls_min = 1
+crusader_scrolls_max = 1
+fow = "0"
+fow_min = 1
+fow_max = 1
+items = "0"
+item_effects = "0"
+remove_weapon_locks = "0"
+items = "0"
+item_effects = "0"
+chapter_music = "0"
 ###
 
 ### INIT
@@ -310,7 +362,6 @@ else:
     items = input("Randomize Weapons?\n")
     item_effects = input("Randomize Weapon Effects?")
     chapter_music = input("Randomize Chapter Music?")
-    tileset = input("Randomize Map Tileset Pallete?")
     remove_weapon_locks = input("Remove Weapon Locks?\n")
     export = input("Export Preset?\n")
     if export == "1":
@@ -359,7 +410,6 @@ else:
         entries.append("item_effects = \"%s\"\n" % item_effects)
         entries.append("items = \"%s\"\n" % items)
         entries.append("chapter_music = \"%s\"\n" % chapter_music)
-        entries.append("tileset = \"%s\"\n" % tileset)
         prst = open("%s.rpst" % export_name, "w")
         prst.writelines(entries)
         prst.close()
@@ -477,16 +527,16 @@ draco_eyvel = Unit(rom, 0x13C)
 ### ACTUAL RANDOMIZATION
 if character_classes == "1":
     if leif_class == "1":
-        leif.uclass = unpromoted[random.randint(1, 9999)]
+        leif.uclass = unpromoted[random.randint(1, 1000)]
     if player_class == "1":
-        for x in range(0, 34):
-            exec("%s.uclass = unpromoted[random.randint(0, 9999)]" % unit_exec_class[x + 1])
+        for x in range(0, len(unit_exec_class)):
+            exec("%s.uclass = unpromoted[random.randint(0, 1000)]" % unit_exec_class[x])
         for x in range(0, 17):
-            exec("%s.uclass = promoted[random.randint(0, 9999)]" % unit_exec_class[x + 35])
+            exec("%s.uclass = promoted[random.randint(0, 1000)]" % unit_exec_class[x + 35])
     if boss_class == "1":
-        weisman.uclass = unpromoted[random.randint(1, 9999)]
-        for x in range(0, 49):
-            exec("%s.uclass = promoted[random.randint(0, 9999)]" % unit_exec_class_boss[x + 1])
+        weisman.uclass = unpromoted[random.randint(1, 1000)]
+        for x in range(0, len(unit_exec_class_boss)):
+            exec("%s.uclass = promoted[random.randint(0, 1000)]" % unit_exec_class_boss[x])
 if growths_player == "1":
     for x in range(0, 52):
         exec("%s.hp_growth = random.randint(growths_min, growths_max)" % unit_exec_class[x])
@@ -534,7 +584,7 @@ if skills_bosses == "1":
 if movement_stars_player == "1":
     for x in range(0, 52):
         exec("%s.move_stars = random.randint(movement_stars_min, movement_stars_max)" % unit_exec_class[x])
-if movement_stars_bosses == "1":
+if movement_stars_enemy == "1":
     for x in range(0, 50):
         exec("%s.move_stars = random.randint(movement_stars_min, movement_stars_max)" % unit_exec_class_boss[x])
 if leadership_stars_player == "1":
@@ -559,180 +609,162 @@ if pcc_boss == "1":
 #open ROM
 romhand = open(file_path, "wb")
 #unit writing
-romhand.seek((48 * 0) + 0x31A2D)
-romhand.write(leif.writable())
-romhand.seek((48 * 1) + 0x31A2D)
-romhand.write(finn.writable())
-romhand.seek((48 * 2) + 0x31A2D)
-romhand.write(orsin.writable())
-romhand.seek((48 * 3) + 0x31A2D)
-romhand.write(halvan.writable())
-romhand.seek((48 * 4) + 0x31A2D)
-romhand.write(eyvel.writable())
-romhand.seek((48 * 5) + 0x31A2D)
-romhand.write(dagdar.writable())
-romhand.seek((48 * 6) + 0x31A2D)
-romhand.write(ralph.writable())
-romhand.seek((48 * 7) + 0x31A2D)
-romhand.write(marty.writable())
-romhand.seek((48 * 8) + 0x31A2D)
-romhand.write(ronan.writable())
-romhand.seek((48 * 9) + 0x31A2D)
-romhand.write(miranda.writable())
-romhand.seek((48 * 10) + 0x31A2D)
-romhand.write(safy.writable())
-romhand.seek((48 * 11) + 0x31A2D)
-romhand.write(lara.writable())
+for x in range(0, 52):
+    exec("romhand.seek(%s.origoff)" % unit_exec_class[x])
+    exec("romhand.write(%s.writable())" % unit_exec_class[x])
+for x in range(0, 50):
+    exec("romhand.seek(%s.origoff)" % unit_exec_class_boss[x])
+    exec("romhand.write(%s.writable())" % unit_exec_class_boss[x])
 #promo writing/correcting
 if promotions == "1":
     romhand.seek(0x402F3 + (3 * 0))
-    romhand.write(promo[random.randint(0, 50)])
+    romhand.write(bytes([promo[random.randint(0, 50)]]))
     romhand.seek(0x402F3 + (3 * 1))
-    romhand.write(promo[random.randint(0, 50)])
+    romhand.write(bytes([promo[random.randint(0, 50)]]))
     romhand.seek(0x402F3 + (3 * 2))
-    romhand.write(promo[random.randint(0, 50)])
+    romhand.write(bytes([promo[random.randint(0, 50)]]))
     romhand.seek(0x402F3 + (3 * 3))
-    romhand.write(promo[random.randint(0, 50)])
+    romhand.write(bytes([promo[random.randint(0, 50)]]))
     romhand.seek(0x402F3 + (3 * 4))
-    romhand.write(promo[random.randint(0, 50)])
+    romhand.write(bytes([promo[random.randint(0, 50)]]))
     romhand.seek(0x402F3 + (3 * 5))
-    romhand.write(promo[random.randint(0, 50)])
+    romhand.write(bytes([promo[random.randint(0, 50)]]))
     romhand.seek(0x402F3 + (3 * 6))
-    romhand.write(promo[random.randint(0, 50)])
+    romhand.write(bytes([promo[random.randint(0, 50)]]))
     romhand.seek(0x402F3 + (3 * 7))
-    romhand.write(promo[random.randint(0, 50)])
+    romhand.write(bytes([promo[random.randint(0, 50)]]))
     romhand.seek(0x402F3 + (3 * 8))
-    romhand.write(promo[random.randint(0, 50)])
+    romhand.write(bytes([promo[random.randint(0, 50)]]))
     romhand.seek(0x402F3 + (3 * 9))
-    romhand.write(promo[random.randint(0, 50)])
+    romhand.write(bytes([promo[random.randint(0, 50)]]))
     romhand.seek(0x402F3 + (3 * 10))
-    romhand.write(promo[random.randint(0, 50)])
+    romhand.write(bytes([promo[random.randint(0, 50)]]))
     romhand.seek(0x402F3 + (3 * 11))
-    romhand.write(promo[random.randint(0, 50)])
+    romhand.write(bytes([promo[random.randint(0, 50)]]))
     romhand.seek(0x402F3 + (3 * 12))
-    romhand.write(promo[random.randint(0, 50)])
+    romhand.write(bytes([promo[random.randint(0, 50)]]))
     romhand.seek(0x402F3 + (3 * 13))
-    romhand.write(promo[random.randint(0, 50)])
+    romhand.write(bytes([promo[random.randint(0, 50)]]))
     romhand.seek(0x402F3 + (3 * 14))
-    romhand.write(promo[random.randint(0, 50)])
+    romhand.write(bytes([promo[random.randint(0, 50)]]))
     romhand.seek(0x402F3 + (3 * 15))
-    romhand.write(promo[random.randint(0, 50)])
+    romhand.write(bytes([promo[random.randint(0, 50)]]))
     romhand.seek(0x402F3 + (3 * 16))
-    romhand.write(promo[random.randint(0, 50)])
+    romhand.write(bytes([promo[random.randint(0, 50)]]))
     romhand.seek(0x402F3 + (3 * 17))
-    romhand.write(promo[random.randint(0, 50)])
+    romhand.write(bytes([promo[random.randint(0, 50)]]))
     romhand.seek(0x402F3 + (3 * 18))
-    romhand.write(promo[random.randint(0, 50)])
+    romhand.write(bytes([promo[random.randint(0, 50)]]))
     romhand.seek(0x402F3 + (3 * 19))
-    romhand.write(promo[random.randint(0, 50)])
+    romhand.write(bytes([promo[random.randint(0, 50)]]))
     romhand.seek(0x402F3 + (3 * 20))
-    romhand.write(promo[random.randint(0, 50)])
+    romhand.write(bytes([promo[random.randint(0, 50)]]))
     romhand.seek(0x402F3 + (3 * 21))
-    romhand.write(promo[random.randint(0, 50)])
+    romhand.write(bytes([promo[random.randint(0, 50)]]))
     romhand.seek(0x402F3 + (3 * 22))
-    romhand.write(promo[random.randint(0, 50)])
+    romhand.write(bytes([promo[random.randint(0, 50)]]))
     romhand.seek(0x402F3 + (3 * 23))
-    romhand.write(promo[random.randint(0, 50)])
+    romhand.write(bytes([promo[random.randint(0, 50)]]))
     romhand.seek(0x402F3 + (3 * 24))
-    romhand.write(promo[random.randint(0, 50)])
+    romhand.write(bytes([promo[random.randint(0, 50)]]))
     romhand.seek(0x402F3 + (3 * 25))
-    romhand.write(promo[random.randint(0, 50)])
+    romhand.write(bytes([promo[random.randint(0, 50)]]))
     romhand.seek(0x402F3 + (3 * 26))
-    romhand.write(promo[random.randint(0, 50)])
+    romhand.write(bytes([promo[random.randint(0, 50)]]))
     romhand.seek(0x402F3 + (3 * 27))
-    romhand.write(promo[random.randint(0, 50)])
+    romhand.write(bytes([promo[random.randint(0, 50)]]))
     romhand.seek(0x402F3 + (3 * 28))
-    romhand.write(promo[random.randint(0, 50)])
+    romhand.write(bytes([promo[random.randint(0, 50)]]))
     romhand.seek(0x402F3 + (3 * 29))
-    romhand.write(promo[random.randint(0, 50)])
+    romhand.write(bytes([promo[random.randint(0, 50)]]))
     romhand.seek(0x402F3 + (3 * 30))
-    romhand.write(promo[random.randint(0, 50)])
+    romhand.write(bytes([promo[random.randint(0, 50)]]))
     romhand.seek(0x402F3 + (3 * 31))
-    romhand.write(promo[random.randint(0, 50)])
+    romhand.write(bytes([promo[random.randint(0, 50)]]))
     romhand.seek(0x402F3 + (3 * 32))
-    romhand.write(promo[random.randint(0, 50)])
+    romhand.write(bytes([promo[random.randint(0, 50)]]))
 else:
     romhand.seek(0x402F3 + (3 * 0))
-    romhand.write(promolinker(finn.uclass))
+    romhand.write(bytes([promolinker(finn.uclass)]))
     romhand.seek(0x402F3 + (3 * 1))
-    romhand.write(promolinker(orsin.uclass))
+    romhand.write(bytes([promolinker(orsin.uclass)]))
     romhand.seek(0x402F3 + (3 * 2))
-    romhand.write(promolinker(halvan.uclass))
+    romhand.write(bytes([promolinker(halvan.uclass)]))
     romhand.seek(0x402F3 + (3 * 3))
-    romhand.write(promolinker(ralph.uclass))
+    romhand.write(bytes([promolinker(ralph.uclass)]))
     romhand.seek(0x402F3 + (3 * 4))
-    romhand.write(promolinker(marty.uclass))
+    romhand.write(bytes([promolinker(marty.uclass)]))
     romhand.seek(0x402F3 + (3 * 5))
-    romhand.write(promolinker(ronan.uclass))
+    romhand.write(bytes([promolinker(ronan.uclass)]))
     romhand.seek(0x402F3 + (3 * 6))
-    romhand.write(promolinker(miranda.uclass))
+    romhand.write(bytes([promolinker(miranda.uclass)]))
     romhand.seek(0x402F3 + (3 * 7))
-    romhand.write(promolinker(safy.uclass))
+    romhand.write(bytes([promolinker(safy.uclass)]))
     romhand.seek(0x402F3 + (3 * 8))
-    romhand.write(promolinker(lara.uclass))
+    romhand.write(bytes([promolinker(lara.uclass)]))
     romhand.seek(0x402F3 + (3 * 9))
-    romhand.write(promolinker(brighton.uclass))
+    romhand.write(bytes([promolinker(brighton.uclass)]))
     romhand.seek(0x402F3 + (3 * 10))
-    romhand.write(promolinker(fergus.uclass))
+    romhand.write(bytes([promolinker(fergus.uclass)]))
     romhand.seek(0x402F3 + (3 * 11))
-    romhand.write(promolinker(eda.uclass))
+    romhand.write(bytes([promolinker(eda.uclass)]))
     romhand.seek(0x402F3 + (3 * 12))
-    romhand.write(promolinker(asvel.uclass))
+    romhand.write(bytes([promolinker(asvel.uclass)]))
     romhand.seek(0x402F3 + (3 * 13))
-    romhand.write(promolinker(matria.uclass))
+    romhand.write(bytes([promolinker(matria.uclass)]))
     romhand.seek(0x402F3 + (3 * 14))
-    romhand.write(promolinker(hicks.uclass))
+    romhand.write(bytes([promolinker(hicks.uclass)]))
     romhand.seek(0x402F3 + (3 * 15))
-    romhand.write(promolinker(nanna.uclass))
+    romhand.write(bytes([promolinker(nanna.uclass)]))
     romhand.seek(0x402F3 + (3 * 16))
-    romhand.write(promolinker(selphina.uclass))
+    romhand.write(bytes([promolinker(selphina.uclass)]))
     romhand.seek(0x402F3 + (3 * 17))
-    romhand.write(promolinker(dalson.uclass))
+    romhand.write(bytes([promolinker(dalson.uclass)]))
     romhand.seek(0x402F3 + (3 * 18))
-    romhand.write(promolinker(callion.uclass))
+    romhand.write(bytes([promolinker(callion.uclass)]))
     romhand.seek(0x402F3 + (3 * 19))
-    romhand.write(promolinker(shiva.uclass))
+    romhand.write(bytes([promolinker(shiva.uclass)]))
     romhand.seek(0x402F3 + (3 * 20))
-    romhand.write(promolinker(kane.uclass))
+    romhand.write(bytes([promolinker(kane.uclass)]))
     romhand.seek(0x402F3 + (3 * 21))
-    romhand.write(promolinker(alba.uclass))
+    romhand.write(bytes([promolinker(alba.uclass)]))
     romhand.seek(0x402F3 + (3 * 22))
-    romhand.write(promolinker(robert.uclass))
+    romhand.write(bytes([promolinker(robert.uclass)]))
     romhand.seek(0x402F3 + (3 * 23))
-    romhand.write(promolinker(lifis.uclass))
+    romhand.write(bytes([promolinker(lifis.uclass)]))
     romhand.seek(0x402F3 + (3 * 24))
-    romhand.write(promolinker(karen.uclass))
+    romhand.write(bytes([promolinker(karen.uclass)]))
     romhand.seek(0x402F3 + (3 * 25))
-    romhand.write(promolinker(trude.uclass))
+    romhand.write(bytes([promolinker(trude.uclass)]))
     romhand.seek(0x402F3 + (3 * 26))
-    romhand.write(promolinker(tanya.uclass))
+    romhand.write(bytes([promolinker(tanya.uclass)]))
     romhand.seek(0x402F3 + (3 * 27))
-    romhand.write(promolinker(salem.uclass))
+    romhand.write(bytes([promolinker(salem.uclass)]))
     romhand.seek(0x402F3 + (3 * 28))
-    romhand.write(promolinker(seluf.uclass))
+    romhand.write(bytes([promolinker(seluf.uclass)]))
     romhand.seek(0x402F3 + (3 * 29))
-    romhand.write(promolinker(mareeta.uclass))
+    romhand.write(bytes([promolinker(mareeta.uclass)]))
     romhand.seek(0x402F3 + (3 * 30))
-    romhand.write(promolinker(tina.uclass))
+    romhand.write(bytes([promolinker(tina.uclass)]))
     romhand.seek(0x402F3 + (3 * 31))
-    romhand.write(promolinker(homer.uclass))
+    romhand.write(bytes([promolinker(homer.uclass)]))
     romhand.seek(0x402F3 + (3 * 32))
-    romhand.write(promolinker(sara.uclass))
+    romhand.write(bytes([promolinker(sara.uclass)]))
 #item writing
 #scroll writing
 #chapter data randomization
 if fow == "1":
     for x in range(0, 35):
         romhand.seek(0x2004A + (48 * x) + 35)
-        romhand.write(random.randint(fow_min, fow_max))
+        romhand.write(bytes([random.randint(fow_min, fow_max)]))
 if chapter_music == "1":
     for x in range(0, 35):
         romhand.seek(0x2004A + (48 * x) + 43)
-        romhand.write(random.randint(1, 64))
+        romhand.write(bytes([random.randint(1, 64)]))
         romhand.seek(0x2004A + (48 * x) + 44)
-        romhand.write(random.randint(1, 64))
+        romhand.write(bytes([random.randint(1, 64)]))
         romhand.seek(0x2004A + (48 * x) + 45)
-        romhand.write(random.randint(1, 64))
+        romhand.write(bytes([random.randint(1, 64)]))
 #invintory and weapon ranks
 #increase enemy growths
 if increase_enemy == "1":
@@ -747,21 +779,21 @@ if increase_enemy == "1":
             unit = unit + 1
         else:
             romhand.seek(0x31A2D + 11 + (unit * 48))
-            romhand.write(int(rom[0x31A2D + 11 + (unit * 48)]) + enemy_growth_varient)
+            romhand.write(bytes([int(rom[0x31A2D + 11 + (unit * 48)]) + enemy_growth_varient]))
             romhand.seek(0x31A2D + 12 + (unit * 48))
-            romhand.write(int(rom[0x31A2D + 12 + (unit * 48)]) + enemy_growth_varient)
+            romhand.write(bytes([int(rom[0x31A2D + 12 + (unit * 48)]) + enemy_growth_varient]))
             romhand.seek(0x31A2D + 13 + (unit * 48))
-            romhand.write(int(rom[0x31A2D + 13 + (unit * 48)]) + enemy_growth_varient)
+            romhand.write(bytes([int(rom[0x31A2D + 13 + (unit * 48)]) + enemy_growth_varient]))
             romhand.seek(0x31A2D + 14 + (unit * 48))
-            romhand.write(int(rom[0x31A2D + 14 + (unit * 48)]) + enemy_growth_varient)
+            romhand.write(bytes([int(rom[0x31A2D + 14 + (unit * 48)]) + enemy_growth_varient]))
             romhand.seek(0x31A2D + 15 + (unit * 48))
-            romhand.write(int(rom[0x31A2D + 15 + (unit * 48)]) + enemy_growth_varient)
+            romhand.write(bytes([int(rom[0x31A2D + 15 + (unit * 48)]) + enemy_growth_varient]))
             romhand.seek(0x31A2D + 16 + (unit * 48))
-            romhand.write(int(rom[0x31A2D + 16 + (unit * 48)]) + enemy_growth_varient)
+            romhand.write(bytes([int(rom[0x31A2D + 16 + (unit * 48)]) + enemy_growth_varient]))
             romhand.seek(0x31A2D + 17 + (unit * 48))
-            romhand.write(int(rom[0x31A2D + 17 + (unit * 48)]) + enemy_growth_varient)
+            romhand.write(bytes([int(rom[0x31A2D + 17 + (unit * 48)]) + enemy_growth_varient]))
             romhand.seek(0x31A2D + 18 + (unit * 48))
-            romhand.write(int(rom[0x31A2D + 18 + (unit * 48)]) + enemy_growth_varient)
+            romhand.write(bytes([int(rom[0x31A2D + 18 + (unit * 48)]) + enemy_growth_varient]))
             unit = unit + 1
 #close ROM
 romhand.close()

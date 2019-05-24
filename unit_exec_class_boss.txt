@@ -38,8 +38,8 @@ farden
 coulter
 reinhardt
 mus
-tigeris
-tigeris_dagdar
+tigris
+tigris_dagdar
 canis
 canis_sara
 bovis
