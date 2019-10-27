@@ -6,3 +6,5 @@ This program will randomize certain gameplay elements of FE5 to create a new exp
 This program DOES NOT translate the ROM. 
 
 Feel free to repurpose this randomizer for other games as well. See LICENSE for more details.
+
+This code is still very messy and it is still very early in development. I proboby won't be finishing it. It's here more for a refrence/if anyone else wants to finish it.
